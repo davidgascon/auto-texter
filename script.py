@@ -1,7 +1,7 @@
 #auto texter
 
 
-#crapy way of clearning the terminal window
+#bad way of clearning the terminal window
 def clearscreen(iterations=0):
 	if iterations != 0:
 		iterations = 50-iterations
