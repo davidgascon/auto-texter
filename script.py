@@ -83,15 +83,15 @@ clearscreen(5)
 
 
 #Gets information about where things are on screen
-print("We will now figure out where everything is on your screen. ")
-print("Please open google voice to the text screen and press enter.")
+print("This script is a macro, whoch means it simulates computer clicks to complete the task of sending messages via Google Voice. For this to properly work, we will need to log where the following buttons are.")
+print("Please open google voice to the text screen.")
 input("Press enter to continue.")
 
 input("Move your mouse to the 'send new message' button and press enter")
 sendnewmessage = py.position()
 py.click(sendnewmessage)
 time.sleep(1)
-py.write("360")
+py.write("360") #needed to get the following button to appear
 time.sleep(1)
 
 terminalwindow.activate()
