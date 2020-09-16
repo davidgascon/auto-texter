@@ -20,15 +20,34 @@ print("Welcome to the autotexter.\n\n")
 #imports
 try:
 	import pandas as pd
-	import pyautogui as py
-	import pygetwindow
-	import time
-
-	#other variables well need later
-	terminalwindow = pygetwindow.getWindowsWithTitle('script.py')[0]
-
 except:
-	print("Not all required imports present. Please confirm all imports are satisfied then relaunch.")
+	print("Pandas Import needed. Try running 'pip install pandas'.")
+	exit()
+	
+try:
+	import pyautogui as py
+except:
+	print("Pyautoguu import needed. Try running 'pip install pyautogui'.")
+	exit()
+	
+try:
+	import pygetwindow
+except:
+	print("Pygetwindow import needed. Try running 'pip install pygetwindow'.")
+	exit()
+	
+try:
+	import time
+except:
+	print("Time import needed  Try running 'pip install time'.")
+	exit()
+
+
+#other variables we'll need later
+try:
+	terminalwindow = pygetwindow.getWindowsWithTitle('script.py')[0]
+except:
+	print("Error find this terminal window")
 	exit()
 
 
