@@ -13,6 +13,7 @@ def clearscreen(iterations=0):
 
 
 clearscreen()
+
 print("Welcome to the autotexter.\n\n")
 
 
@@ -20,15 +21,34 @@ print("Welcome to the autotexter.\n\n")
 #imports
 try:
 	import pandas as pd
-	import pyautogui as py
-	import pygetwindow
-	import time
-
-	#other variables well need later
-	terminalwindow = pygetwindow.getWindowsWithTitle('script.py')[0]
-
 except:
-	print("Not all required imports present. Please confirm all imports are satisfied then relaunch.")
+	print("Pandas Import needed. Try running 'pip install pandas'.")
+	exit()
+	
+try:
+	import pyautogui as py
+except:
+	print("Pyautoguu import needed. Try running 'pip install pyautogui'.")
+	exit()
+	
+try:
+	import pygetwindow
+except:
+	print("Pygetwindow import needed. Try running 'pip install pygetwindow'.")
+	exit()
+	
+try:
+	import time
+except:
+	print("Time import needed  Try running 'pip install time'.")
+	exit()
+
+
+#other variables we'll need later
+try:
+	terminalwindow = pygetwindow.getWindowsWithTitle('script.py')[0]
+except:
+	print("Error find this terminal window")
 	exit()
 
 
@@ -38,21 +58,21 @@ try:
 	data = pd.read_excel('data.xlsx', header=0)
 	data2 = pd.read_excel('data.xlsx', header=0)
 except NameError:
-	print("Error finding file. Do you have XLRD installed? (pip install xlrd)")
+	print("Error finding data.xlsx. Do you have XLRD installed? (pip install xlrd)")
 except:
 	print("Error reading file.")	
 
 print("\n\nHere is the data well be analyzing\n", data, "\n\n\n")
 
 message = input("Enter the message you want to send out. Use curly brackets to indicate the name. Example - 'Hello {name}'. Or press enter for the default testing message")
+message = message.strip()
 if message == '':
 	message = "Hello {name}. This is just a test."
 
 clearscreen(5)
 print("Here is a sample of each of the texts sent.")
 for index, row in data.iterrows():
-	ogmessage = message
-	newmessage = ogmessage.split("{name}")
+	newmessage = message.split("{name}")
 	name = row['first name'].lower().capitalize()
 	messagetosend = newmessage[0] + name + newmessage[1]
 	print(messagetosend)
@@ -62,15 +82,15 @@ clearscreen(5)
 
 
 #Gets information about where things are on screen
-print("We will now figure out where everything is on your screen. ")
-print("Please open google voice to the text screen and press enter.")
+print("This script is a macro, whoch means it simulates computer clicks to complete the task of sending messages via Google Voice. For this to properly work, we will need to log where the following buttons are.")
+print("Please open google voice to the text screen.")
 input("Press enter to continue.")
 
 input("Move your mouse to the 'send new message' button and press enter")
 sendnewmessage = py.position()
 py.click(sendnewmessage)
 time.sleep(1)
-py.write("360")
+py.write("360") #needed to get the following button to appear
 time.sleep(1)
 
 terminalwindow.activate()
@@ -103,8 +123,7 @@ def sendcycle(tomsg, message):
 	print(f"Clicking 'send to {tomsg}'")
 	py.click(tomessage)
 	print("Clicking type message")
-	py.click(typemessage)
-	py.click(typemessage)
+	py.click(typemessage)*2
 	print("Typing message")
 	time.sleep(1)
 	py.write(f"{message}")
@@ -118,8 +137,7 @@ if input("Press enter to send, or enter any character then enter to quit.") != '
 
 textssent = 0
 for index, row in data2.iterrows():
-	ogmessage = message
-	newmessage = ogmessage.split("{name}")
+	newmessage = message.split("{name}")
 	name = row['first name'].lower().capitalize()
 	messagetosend = newmessage[0] + name + newmessage[1]
 	print(f"Message to send is {messagetosend}")
