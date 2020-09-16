@@ -72,8 +72,7 @@ if message == '':
 clearscreen(5)
 print("Here is a sample of each of the texts sent.")
 for index, row in data.iterrows():
-	ogmessage = message
-	newmessage = ogmessage.split("{name}")
+	newmessage = message.split("{name}")
 	name = row['first name'].lower().capitalize()
 	messagetosend = newmessage[0] + name + newmessage[1]
 	print(messagetosend)
@@ -138,8 +137,7 @@ if input("Press enter to send, or enter any character then enter to quit.") != '
 
 textssent = 0
 for index, row in data2.iterrows():
-	ogmessage = message
-	newmessage = ogmessage.split("{name}")
+	newmessage = message.split("{name}")
 	name = row['first name'].lower().capitalize()
 	messagetosend = newmessage[0] + name + newmessage[1]
 	print(f"Message to send is {messagetosend}")
