@@ -13,6 +13,7 @@ def clearscreen(iterations=0):
 
 
 clearscreen()
+
 print("Welcome to the autotexter.\n\n")
 
 
@@ -57,13 +58,14 @@ try:
 	data = pd.read_excel('data.xlsx', header=0)
 	data2 = pd.read_excel('data.xlsx', header=0)
 except NameError:
-	print("Error finding file. Do you have XLRD installed? (pip install xlrd)")
+	print("Error finding data.xlsx. Do you have XLRD installed? (pip install xlrd)")
 except:
 	print("Error reading file.")	
 
 print("\n\nHere is the data well be analyzing\n", data, "\n\n\n")
 
 message = input("Enter the message you want to send out. Use curly brackets to indicate the name. Example - 'Hello {name}'. Or press enter for the default testing message")
+message = message.strip()
 if message == '':
 	message = "Hello {name}. This is just a test."
 
