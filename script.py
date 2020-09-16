@@ -10,6 +10,28 @@ def clearscreen(iterations=0):
 		print("\n")
 		a += 1
 
+def sendcycle(tomsg, message):
+	global sendnewmessage, tomessage, typemessage, sendmessage
+	print("Clicking new message")
+	py.click(sendnewmessage)
+	print("Writing to number")
+	py.write(f"{tomsg}")
+	time.sleep(.5)
+	py.press('enter')
+	time.sleep(.5)
+	print(f"Clicking 'send to {tomsg}'")
+	py.click(tomessage)
+	print("Clicking type message")
+	py.click(typemessage)
+	py.click(typemessage) #for whatever reason it needs to double click. This is because the screen is currently entering who you'll send the text to. First click is to close that prompt, the second click is to select where the message goes.	
+	print("Typing message")
+	time.sleep(1)
+	py.write(f"{message}")
+	time.sleep(1)
+	print("Hitting Send!")
+	py.click(sendmessage)
+	print("\n")
+
 
 
 clearscreen()
@@ -61,12 +83,13 @@ except:
 
 #import datafile
 try:
-	data = pd.read_excel('data.xlsx', header=0)
-	data2 = pd.read_excel('data.xlsx', header=0)
-except NameError:
-	print("Error finding data.xlsx. Do you have XLRD installed? (pip install xlrd)")
+	data = pd.read_csv('data.csv') 
 except:
-	print("Error reading file.")	
+	try:
+		data = pd.read_excel('data.xlsx', header=0)
+	except NameError:
+		print("Error finding data.xlsx. Do you have XLRD installed? (pip install xlrd)")
+		print("Error reading file.")	
 
 print("\n\nHere is the data well be analyzing\n", data, "\n\n\n")
 
@@ -76,6 +99,7 @@ if message == '':
 	message = "Hello {name}. This is just a test."
 
 clearscreen(5)
+
 print("Here is a sample of each of the texts sent.")
 for index, row in data.iterrows():
 	newmessage = message.split("{name}")
@@ -118,7 +142,6 @@ except:
 py.click(tomessage)
 
 #locates where you type the message
-#terminalwindow.activate()
 try:
 	typemessage = py.locateCenterOnScreen("images/type_a_message.png")
 except:
@@ -128,8 +151,6 @@ except:
 py.click(typemessage)
 
 #locates send button
-
-
 try:
 	sendmessage = py.locateCenterOnScreen("images/send.png")
 except:
@@ -139,29 +160,6 @@ except:
 py.click(sendmessage)
 
 
-
-
-def sendcycle(tomsg, message):
-	global sendnewmessage, tomessage, typemessage, sendmessage
-	print("Clicking new message")
-	py.click(sendnewmessage)
-	print("Writing to number")
-	py.write(f"{tomsg}")
-	time.sleep(.5)
-	py.press('enter')
-	time.sleep(.5)
-	print(f"Clicking 'send to {tomsg}'")
-	py.click(tomessage)
-	print("Clicking type message")
-	py.click(typemessage)
-	py.click(typemessage) #for whatever reason it needs to double click. This is because the screen is currently entering who you'll send the text to. First click is to close that prompt, the second click is to select where the message goes.	
-	print("Typing message")
-	time.sleep(1)
-	py.write(f"{message}")
-	time.sleep(1)
-	print("Hitting Send!")
-	py.click(sendmessage)
-	print("\n")
 
 terminalwindow.activate()
 if input("Press enter to send, or enter any character then enter to quit.") != '':
