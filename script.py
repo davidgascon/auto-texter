@@ -46,9 +46,15 @@ except:
 
 #other variables we'll need later
 try:
-	terminalwindow = pygetwindow.getWindowsWithTitle('script.py')[0]
+	try:
+		terminalwindow = pygetwindow.getWindowsWithTitle('script.py')[0] #sets the terminal window that will be opened. This should never be the cause of an error.
+	except:
+		print("Error find this terminal window")
+	try:
+		py.PAUSE = 1 #sets the default pause time between clicks
+	except:
+		print("Error setting pause time in pyautogui.") #this should also never be seen.
 except:
-	print("Error find this terminal window")
 	exit()
 
 
@@ -83,34 +89,56 @@ clearscreen(5)
 
 #Gets information about where things are on screen
 print("This script is a macro, whoch means it simulates computer clicks to complete the task of sending messages via Google Voice. For this to properly work, we will need to log where the following buttons are.")
+print("The script will try to automatically locate these buttons, however when prompted, you may need to follow the directions")
 print("Please open google voice to the text screen.")
 input("Press enter to continue.")
 
-input("Move your mouse to the 'send new message' button and press enter")
-sendnewmessage = py.position()
+#locates 'send new message' button
+try: 
+	sendnewmessage = py.locateCenterOnScreen('images/send_new_message.png')
+except:
+	terminalwindow.activate()
+	input("Move your mouse to the 'send new message' button and press enter.")
+	sendnewmessage = py.position()
+
 py.click(sendnewmessage)
 time.sleep(1)
 py.write("360") #needed to get the following button to appear
 time.sleep(1)
+py.press('enter')
+time.sleep(.5)
 
-terminalwindow.activate()
-
-input("Move your mouse to where you enter the to number")
-tomessage = py.position()
+#locates 'type a name or number' button
+try:
+	tomessage = py.locateCenterOnScreen("images/type_a_name.png")
+except:
+	terminalwindow.activate()
+	input("Move your mouse to where you enter the to number, then press enter.")
+	tomessage = py.position()
 py.click(tomessage)
-terminalwindow.activate()
 
-input("Move your mouse to where you click to type the message")
-typemessage = py.position()
+#locates where you type the message
+#terminalwindow.activate()
+try:
+	typemessage = py.locateCenterOnScreen("images/type_a_message.png")
+except:
+	terminalwindow.activate()
+	input("Move your mouse to where you click to type the message, press enter.")
+	typemessage = py.position()
 py.click(typemessage)
-terminalwindow.activate()
 
-input("Lastly, move your mouse to where you hit send")
-sendmessage = py.position()
+#locates send button
+
+
+try:
+	sendmessage = py.locateCenterOnScreen("images/send.png")
+except:
+	terminalwindow.activate()
+	input("Lastly, move your mouse to where you hit send, then press enter")
+	sendmessage = py.position()
 py.click(sendmessage)
-terminalwindow.activate()
 
-py.PAUSE = 1 #sets the default pause time between clicks
+
 
 
 def sendcycle(tomsg, message):
@@ -119,24 +147,28 @@ def sendcycle(tomsg, message):
 	py.click(sendnewmessage)
 	print("Writing to number")
 	py.write(f"{tomsg}")
-	time.sleep(1)
+	time.sleep(.5)
+	py.press('enter')
+	time.sleep(.5)
 	print(f"Clicking 'send to {tomsg}'")
 	py.click(tomessage)
 	print("Clicking type message")
-	py.click(typemessage)*2
+	py.click(typemessage)
+	py.click(typemessage) #for whatever reason it needs to double click. This is because the screen is currently entering who you'll send the text to. First click is to close that prompt, the second click is to select where the message goes.	
 	print("Typing message")
 	time.sleep(1)
 	py.write(f"{message}")
 	time.sleep(1)
 	print("Hitting Send!")
 	py.click(sendmessage)
+	print("\n")
 
-
+terminalwindow.activate()
 if input("Press enter to send, or enter any character then enter to quit.") != '':
 	exit("Exited before sending. Goodbye.")
 
 textssent = 0
-for index, row in data2.iterrows():
+for index, row in data.iterrows():
 	newmessage = message.split("{name}")
 	name = row['first name'].lower().capitalize()
 	messagetosend = newmessage[0] + name + newmessage[1]
