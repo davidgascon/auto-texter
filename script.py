@@ -124,8 +124,7 @@ def sendcycle(tomsg, message):
 	print(f"Clicking 'send to {tomsg}'")
 	py.click(tomessage)
 	print("Clicking type message")
-	py.click(typemessage)
-	py.click(typemessage)
+	py.click(typemessage)*2
 	print("Typing message")
 	time.sleep(1)
 	py.write(f"{message}")
