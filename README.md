@@ -10,7 +10,7 @@ pygetwindow
 pandas
 
 
-Script will do the follow
+Script will do the following
 -Run imports
 -Import data from 'data.xlsx' twice (one as a proof)
 -Lets you enter the message (type {name} where you want their first name to appear. You can only do this once per message.)
